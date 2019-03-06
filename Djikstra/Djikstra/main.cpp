@@ -4,26 +4,13 @@
 #include <fstream>
 #include <vector>
 
+#include "Headers.h"
+
 using namespace std;
-
-struct Edge
-{
-	int 
-	int 
-	string name; 
-	float distance;
-};
-
-struct Vertex
-{
-	string name;
-	vector <Edge> edges;
-	int parent_id = -1;
-	bool visited = 0;
-};
 
 int main()
 {
+
 	string name1, name2;
 	float dist;
 	int i=0;
@@ -37,13 +24,16 @@ int main()
 		exit(1);
 	}
 	
-	vector <Vertex> graph;
 
 	while (!file_data.eof())
 	{
 		file_data >> name1 >> name2 >> dist;
 		
-		
+		//if (!graph.node_exists(name1))
+		//	graph.add_node(name1);
+		//if (!graph.node_exists(name2))
+		//	graph.add_node(name2);
+		//graph.add_edge(name1, name2, dist);
 	}
 
 	cout << name1 << name2 << dist << endl;
