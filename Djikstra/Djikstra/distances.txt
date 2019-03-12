@@ -1,0 +1,7 @@
+Bielsko-Biala Katowice 50
+Bielsko-Biala Wadowice 40 
+Gliwice Katowice 30
+Katowice Krakow 100
+Katowice Wadowice 70
+Krakow Wadowice 50
+Krakow Warszawa 260
