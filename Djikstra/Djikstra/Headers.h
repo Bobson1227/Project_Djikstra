@@ -1,14 +1,18 @@
 #pragma once
 
 #include <vector>
+#include <string>
+#include <iostream>
+#include <cstdlib>
+#include <fstream>
+#include <map>
 
-using namespace std;
 
-namespace graph
+namespace Graph
 {
 	class Graph
 	{
-	private:
+	public:
 		struct Edge
 		{
 			int source_id;
@@ -23,10 +27,19 @@ namespace graph
 			int parent_id = -1;
 			bool visited = 0;
 		};
-	public:
-		void node_exist( string name);
-		void add_node( string name);
-		void add_edge( string name1, string  name2, float dist);
-		void get_node( string name);
+
+		std::vector <Vertex> m_vertex;
+
+		bool node_exist( std::string name);
+		void add_node( std::string name);
+		void add_edge( std::string name1, std::string  name2, float dist, std::vector<Graph::Vertex>& vertex);
+		Graph::Vertex get_node( std::string name, std::vector<Graph::Vertex>& vertex);
 	};
+}
+
+// do graph
+namespace Operations
+{
+	float target_distance( int id, std::vector<Graph::Graph::Vertex>& vertex);
+	bool is_longer( std::string name, std::vector<Graph::Graph::Vertex>& vertex );
 }
