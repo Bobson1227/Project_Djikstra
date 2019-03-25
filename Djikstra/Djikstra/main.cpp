@@ -8,16 +8,13 @@
 #include "Headers.h"
 
 
-
-
 int main()
 {
 	std::string name1, name2;
-	float dist;
-	int i = 0, vector_size;
-	bool check_visited;
+	float dist=0;
 	Graph::Graph graph;
-	Graph::Graph::Vertex node;
+	Graph::Vertex node;
+	bool end1=0, end2=0;
 
 
 	// Loading data
@@ -36,45 +33,45 @@ int main()
 	{
 		file_data >> name1 >> name2 >> dist;
 
-		if (!graph.node_exist(name1, graph.m_vertex))
+		if (!graph.node_exist(name1 ))
 		{
-			graph.add_node(name1);
+			graph.add_node(name1 );
 		}
-		if (!graph.node_exist(name2, graph.m_vertex))
+		if (!graph.node_exist(name2 ))
 		{
-			graph.add_node(name1);
+			graph.add_node(name2 );
 		}
-		graph.add_edge(name1, name2, dist, graph.m_vertex);
+		graph.add_edge(name1, name2, dist );
 	}
-
-	std::cout << name1 << name2 << dist << std::endl;
 
 	file_data.close();
+	// data loaded
 
-	vector_size = graph.m_vertex.size();
 
-	// Operations
-	std::cout << "From where, to where";
+	// searching shortest way from name1 to name2
+	std::cout << "From where, to where?" << std::endl;
 	std::cin >> name1 >> name2;
 
-	
+	if (!graph.node_exist(name1) )
+	{
+		std::cout << name1 << " not exist." << std::endl;
+		end1 = 1;
+	}
+	if( !graph.node_exist(name2) )
+	{
+		std::cout << name2 << " not exist." << std::endl;
+		end2 = 1;
+	}
+	if ( end1 || end2 )
+	{
+		system("pause");
+		exit(1);
+	}
 
 	// Checking vertexes
-	node = graph.get_node(name1, graph.m_vertex);
-	
-	i = 0;
-	while ( i < vector_size )
-	{
-		check_visited = 0;
+	node = graph.get_node(name1 );
+	std::cout << node.name;
 
-		if (graph.m_vertex[i].visited==0)
-		{
-			check_visited = 1;
-			break;
-		}
-		
-		i++;
-	}
 
 	system("pause");
 	return 0;
