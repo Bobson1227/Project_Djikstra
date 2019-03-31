@@ -8,13 +8,14 @@
 #include <map>
 
 
+
 namespace Graph
 {
 	struct Edge
 	{
 		int source_id;
 		int target_id;
-		float distance;
+		float distance = std::numeric_limits<float>::infinity();
 	};
 
 	struct Vertex
@@ -23,13 +24,16 @@ namespace Graph
 		std::vector <Edge> edges;
 		int parent_id = -1;
 		bool visited = 0;
+		float distance = std::numeric_limits<float>::infinity();
 	};
+
 
 	class Graph
 	{
 	public:
 		std::vector <Vertex> m_vertex;
-
+		
+		void load_graph();
 		bool node_exist( std::string name );
 		void add_node( std::string name );
 		void add_edge( std::string name1, std::string  name2, float dist );
