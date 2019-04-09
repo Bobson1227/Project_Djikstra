@@ -33,6 +33,7 @@ namespace Graph
 	public:
 		std::vector <Vertex> m_vertex;
 		
+          void shortest_way(std::string name1, std::string name2);
 		void load_graph();
 		bool node_exist( std::string name );
 		void add_node( std::string name );
@@ -40,5 +41,6 @@ namespace Graph
 		Vertex get_node( std::string name );
 		float target_distance(int id );
 		bool is_longer(int id1, int id2, float dist );
+          void write_data(std::string name);
 	};
 }
