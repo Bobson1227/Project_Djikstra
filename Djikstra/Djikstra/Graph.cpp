@@ -80,7 +80,7 @@ namespace Graph
 
     bool Graph::node_exist( std::string name)
     {
-        for (int i = 0; i < static_cast<int>(m_vertex.size()); i++)
+        for (size_t i = 0; i < m_vertex.size(); i++)
         {
             if (name == m_vertex[i].name)
                 return true;
@@ -138,7 +138,7 @@ namespace Graph
             if (parent_id < 0)
                 break;
 
-            for (int i = 0; i < static_cast<int>(m_vertex[parent_id].edges.size()); ++i)
+            for (size_t i = 0; i < m_vertex[parent_id].edges.size(); ++i)
             {
                 if (id == m_vertex[parent_id].edges[i].target_id)
                 {
@@ -180,7 +180,7 @@ namespace Graph
 
              if (node.visited != 1)
              {
-                 for (int i = 0; i < static_cast<int>(node.edges.size()); i++)
+                 for (size_t i = 0; i < node.edges.size(); i++)
                  {
                      if (!is_longer(m_map[node.name], node.edges[i].target_id, node.edges[i].distance))
                      {
@@ -201,17 +201,18 @@ namespace Graph
      
     void Graph::write_data(std::string name)
     {
-        int id = m_map[ name ] ;
+        size_t id = m_map[ name ] ;
 
         std::fstream file;
         file.open("destination.txt" , std::ios::out);
 
         while (true)
         {
-            if (id <= 0)
+            file << m_vertex[id].name << " " << m_vertex[id].distance << std::endl;
+
+            if (!m_vertex[id].parent_id)
                 break;
 
-            file << m_vertex[id].name << " " << m_vertex[id].distance << std::endl;
             id = m_vertex[id].parent_id;
         }
 

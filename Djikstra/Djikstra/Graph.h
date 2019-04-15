@@ -24,7 +24,7 @@ namespace Graph
         std::vector <Edge> edges;
         int parent_id = -1;
         bool visited = 0;
-        float distance = 0;
+        float distance = std::numeric_limits<float>::infinity();
     };
 
 
