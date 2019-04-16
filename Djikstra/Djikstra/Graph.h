@@ -23,7 +23,7 @@ namespace Graph
         std::string name;
         std::vector <Edge> edges;
         int parent_id = -1;
-        bool visited = 0;
+        bool visited = false;
         float distance = std::numeric_limits<float>::infinity();
     };
 

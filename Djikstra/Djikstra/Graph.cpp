@@ -15,7 +15,7 @@ namespace Graph
     public:
         bool operator()(const Vertex& v1, const Vertex& v2)
         {
-            return v1.distance < v2.distance;
+            return v1.distance > v2.distance;
         }
     };
 
@@ -167,18 +167,21 @@ namespace Graph
      void Graph::shortest_way(std::string name1, std::string name2)
      {
          m_vertex[m_map[name1]].distance = 0;
-
          Vertex node;
-
          std::priority_queue <Vertex, std::deque<Vertex>, Comparator> queue;
-
          queue.push(m_vertex[m_map[name1]]);
 
+         // while the closest is closer than the destination
          while (queue.top().distance < m_vertex[m_map[name2]].distance)
          {
+             if (queue.empty())
+             {
+                 std::cout << "There is an error, cities are not connected" << std::endl;
+                 exit(1);
+             }
              node = get_node(m_map[queue.top().name]);
 
-             if (node.visited != 1)
+             if (node.visited != true)
              {
                  for (size_t i = 0; i < node.edges.size(); i++)
                  {
@@ -190,7 +193,7 @@ namespace Graph
                          m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
                      }
                  }
-                 m_vertex[m_map[node.name]].visited = 1;
+                 m_vertex[m_map[node.name]].visited = true;
              }
 
              queue.pop();
@@ -201,7 +204,7 @@ namespace Graph
      
     void Graph::write_data(std::string name)
     {
-        size_t id = m_map[ name ] ;
+        int id = m_map[ name ] ;
 
         std::fstream file;
         file.open("destination.txt" , std::ios::out);
@@ -210,7 +213,7 @@ namespace Graph
         {
             file << m_vertex[id].name << " " << m_vertex[id].distance << std::endl;
 
-            if (!m_vertex[id].parent_id)
+            if (m_vertex[id].parent_id==-1)
                 break;
 
             id = m_vertex[id].parent_id;
