@@ -124,43 +124,13 @@ namespace Graph
     {
         return m_vertex[id];
     }
-	
+    
+    
 
-
-    float Graph::target_distance(int id)
+    bool Graph::is_shorter(int id1, int id2, float dist)
     {
-        int parent_id = 0 , edge_id = 0;
-        float distance = 0;
-
-        while(true){
-            parent_id = m_vertex[id].parent_id;
-
-            if (parent_id < 0)
-                break;
-
-            for (size_t i = 0; i < m_vertex[parent_id].edges.size(); ++i)
-            {
-                if (id == m_vertex[parent_id].edges[i].target_id)
-                {
-                    edge_id = i;
-                    break;
-                }
-            }
-
-            distance += m_vertex[parent_id].edges[edge_id].distance;
-
-            id = parent_id;
-        }
-
-        return distance;
+        return (m_vertex[id1].distance + dist < m_vertex[id2].distance);
     }
-	
-
-
-     bool Graph::is_longer(int id1, int id2, float dist)
-     {
-         return (target_distance(id1) + dist > target_distance(id2));
-     }
 
 
 
@@ -174,29 +144,29 @@ namespace Graph
          // while the closest is closer than the destination
          while (queue.top().distance < m_vertex[m_map[name2]].distance)
          {
-             if (queue.empty())
-             {
-                 std::cout << "There is an error, cities are not connected" << std::endl;
-                 exit(1);
-             }
+             //if (queue.empty())
+             //{
+             //    std::cout << "There is an error, cities are not connected" << std::endl;
+             //    exit(1);
+             //}
              node = get_node(m_map[queue.top().name]);
 
-             if (node.visited != true)
+             if (node.visited != 1)
              {
                  for (size_t i = 0; i < node.edges.size(); i++)
                  {
-                     if (!is_longer(m_map[node.name], node.edges[i].target_id, node.edges[i].distance))
+                     if (is_shorter(m_map[node.name], node.edges[i].target_id, node.edges[i].distance))
                      {
-                         m_vertex[node.edges[i].target_id].distance = target_distance(m_map[node.name]) + node.edges[i].distance;
-                         queue.push(m_vertex[node.edges[i].target_id]);
+                         m_vertex[node.edges[i].target_id].distance = m_vertex[m_map[node.name]].distance + node.edges[i].distance;
+                         queue.push( m_vertex[node.edges[i].target_id]);
                          m_vertex[node.edges[i].target_id].visited = 0;
                          m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
                      }
                  }
-                 m_vertex[m_map[node.name]].visited = true;
+                 m_vertex[m_map[node.name]].visited = 1;
              }
 
-             queue.pop();
+                 queue.pop();
          }
      }
 

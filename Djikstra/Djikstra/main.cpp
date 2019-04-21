@@ -7,7 +7,6 @@
 
 #include "Graph.h"
 
-
 int main()
 {
     std::string name1, name2;
