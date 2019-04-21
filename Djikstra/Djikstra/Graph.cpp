@@ -55,7 +55,7 @@ namespace Graph
 
 
 
-    void Graph::vertexes_exist( std::string name1, std::string name2)
+    void Graph::vertexes_exist(const std::string& name1, const std::string& name2)
     {
         bool end1 = 0, end2 = 0;
 
@@ -78,7 +78,7 @@ namespace Graph
 
 
 
-    bool Graph::node_exist( std::string name)
+    bool Graph::node_exist(const std::string& name)
     {
         for (size_t i = 0; i < m_vertex.size(); i++)
         {
@@ -92,30 +92,18 @@ namespace Graph
 
     void Graph::add_node( std::string name)
     {
-        m_vertex.resize(m_vertex.size() + 1 );
-        m_vertex[m_vertex.size()-1].name = name;
+        m_vertex.emplace_back(Vertex{ name = name });
         m_map[name] = m_vertex.size()-1;
     }
 
 
 
-    void Graph::add_edge( std::string name1, std::string name2, float dist )
+    void Graph::add_edge(const std::string& name1, const std::string& name2, float dist )
     {
         int id1 = m_map[ name1 ], id2 = m_map[ name2 ];
-        int edges_size1, edges_size2;
-
-        edges_size1 = m_vertex[id1].edges.size();
-        edges_size2 = m_vertex[id2].edges.size();
-        m_vertex[id1].edges.resize(edges_size1 + 1);
-        m_vertex[id2].edges.resize(edges_size2 + 1);
-
-        m_vertex[id1].edges[edges_size1].source_id = id1;
-        m_vertex[id1].edges[edges_size1].target_id = id2;
-        m_vertex[id1].edges[edges_size1].distance = dist;
-
-        m_vertex[id2].edges[edges_size2].source_id = id2;
-        m_vertex[id2].edges[edges_size2].target_id = id1;
-        m_vertex[id2].edges[edges_size2].distance = dist;
+        
+        m_vertex[id1].edges.emplace_back(Edge{ id1, id2, dist });
+        m_vertex[id2].edges.emplace_back(Edge{ id2, id1, dist });
     }
 
 
@@ -134,7 +122,7 @@ namespace Graph
 
 
 
-     void Graph::shortest_way(std::string name1, std::string name2)
+     void Graph::shortest_way(const std::string& name1, const std::string& name2)
      {
          m_vertex[m_map[name1]].distance = 0;
          Vertex node;
@@ -144,11 +132,11 @@ namespace Graph
          // while the closest is closer than the destination
          while (queue.top().distance < m_vertex[m_map[name2]].distance)
          {
-             //if (queue.empty())
-             //{
-             //    std::cout << "There is an error, cities are not connected" << std::endl;
-             //    exit(1);
-             //}
+             if (queue.empty())
+             {
+                 std::cout << "There is an error, cities are not connected" << std::endl;
+                 exit(1);
+             }
              node = get_node(m_map[queue.top().name]);
 
              if (node.visited != 1)
@@ -172,7 +160,7 @@ namespace Graph
 
 
      
-    void Graph::write_data(std::string name)
+    void Graph::write_data(const std::string& name)
     {
         int id = m_map[ name ] ;
 

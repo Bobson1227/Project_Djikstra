@@ -31,16 +31,16 @@ namespace Graph
     public:
         std::vector <Vertex> m_vertex;
         std::map< std::string, int> m_map;
-        
+
 
         void load_graph();
-        void vertexes_exist(std::string name1, std::string name2);
-        bool node_exist( std::string name );
-        void add_node( std::string name );
-        void add_edge( std::string name1, std::string  name2, float dist );
+        void vertexes_exist(const std::string& name1, const std::string& name2);
+        bool node_exist(const std::string& name );
+        void add_node(std::string name );
+        void add_edge(const std::string& name1, const std::string&  name2, float dist );
         Vertex get_node( int id );
         bool is_shorter(int id1, int id2, float dist );
-        void shortest_way(std::string name1, std::string name2);
-        void write_data(std::string name);
+        void shortest_way(const std::string& name1, const std::string&);
+        void write_data(const std::string& name);
     };
 }
