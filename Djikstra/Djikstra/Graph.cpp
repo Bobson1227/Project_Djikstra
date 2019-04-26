@@ -120,43 +120,42 @@ namespace Graph
         return (m_vertex[id1].distance + dist < m_vertex[id2].distance);
     }
 
+    
+    void Graph::shortest_way(const std::string& name1, const std::string& name2)
+    {
+        m_vertex[m_map[name1]].distance = 0;
+        Vertex node;
+        std::priority_queue <Vertex, std::deque<Vertex>, Comparator> queue;
+        queue.push(m_vertex[m_map[name1]]);
 
+        // while the closest is closer than the destination
+        while (queue.top().distance < m_vertex[m_map[name2]].distance)
+        {
+            if (queue.empty())
+            {
+                std::cout << "There is an error, cities are not connected" << std::endl;
+                exit(1);
+            }
+            node = get_node(m_map[queue.top().name]);
 
-     void Graph::shortest_way(const std::string& name1, const std::string& name2)
-     {
-         m_vertex[m_map[name1]].distance = 0;
-         Vertex node;
-         std::priority_queue <Vertex, std::deque<Vertex>, Comparator> queue;
-         queue.push(m_vertex[m_map[name1]]);
+            if (node.visited != 1)
+            {
+                for (size_t i = 0; i < node.edges.size(); i++)
+                {
+                    if (is_shorter(m_map[node.name], node.edges[i].target_id, node.edges[i].distance))
+                    {
+                        m_vertex[node.edges[i].target_id].distance = m_vertex[m_map[node.name]].distance + node.edges[i].distance;
+                        queue.push( m_vertex[node.edges[i].target_id]);
+                        m_vertex[node.edges[i].target_id].visited = 0;
+                        m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
+                    }
+                }
+                m_vertex[m_map[node.name]].visited = 1;
+            }
 
-         // while the closest is closer than the destination
-         while (queue.top().distance < m_vertex[m_map[name2]].distance)
-         {
-             if (queue.empty())
-             {
-                 std::cout << "There is an error, cities are not connected" << std::endl;
-                 exit(1);
-             }
-             node = get_node(m_map[queue.top().name]);
-
-             if (node.visited != 1)
-             {
-                 for (size_t i = 0; i < node.edges.size(); i++)
-                 {
-                     if (is_shorter(m_map[node.name], node.edges[i].target_id, node.edges[i].distance))
-                     {
-                         m_vertex[node.edges[i].target_id].distance = m_vertex[m_map[node.name]].distance + node.edges[i].distance;
-                         queue.push( m_vertex[node.edges[i].target_id]);
-                         m_vertex[node.edges[i].target_id].visited = 0;
-                         m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
-                     }
-                 }
-                 m_vertex[m_map[node.name]].visited = 1;
-             }
-
-                 queue.pop();
-         }
-     }
+                queue.pop();
+        }
+    }
 
 
      
