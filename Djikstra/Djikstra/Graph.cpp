@@ -21,24 +21,22 @@ namespace Graph
 
 
 
-    void Graph::load_graph() {
+    void Graph::load_graph(const std::string& file_name) 
+    {
         std::string name1, name2;
         float dist = 0;
 
         std::fstream file_data;
-        file_data.open("distances.txt", std::ios::in);
+        file_data.open(file_name, std::ios::in);
 
-        if (file_data.good() == false)
+        if (!file_data.good())
         {
-            std::cout << "Error with oppening";
-            exit(1);
+            throw std::invalid_argument("File can not be loaded");
         }
-
-
         while (!file_data.eof())
         {
             file_data >> name1 >> name2 >> dist;
-
+    
             if (!node_exist(name1))
             {
                 add_node(name1);
@@ -49,48 +47,30 @@ namespace Graph
             }
             add_edge(name1, name2, dist);
         }
-
-        file_data.close();
     }
 
 
 
     void Graph::vertexes_exist(const std::string& name1, const std::string& name2)
     {
-        bool end1 = 0, end2 = 0;
-
         if (!node_exist(name1))
-        {
-            std::cout << name1 << " not exist." << std::endl;
-            end1 = 1;
-        }
+            throw std::invalid_argument("Frist vertex not exist");
         if (!node_exist(name2))
-        {
-            std::cout << name2 << " not exist." << std::endl;
-            end2 = 1;
-        }
-        if (end1 || end2)
-        {
-            system("pause");
-            exit(1);
-        }
+            throw std::invalid_argument("Second vertex not exist");
     }
 
 
 
     bool Graph::node_exist(const std::string& name)
     {
-        for (size_t i = 0; i < m_vertex.size(); i++)
-        {
-            if (name == m_vertex[i].name)
-                return true;
-        }
+        if(m_map.count(name)!=0)
+            return true;
         return false;
     }
 
 
 
-    void Graph::add_node( std::string name)
+    void Graph::add_node(std::string name)
     {
         m_vertex.emplace_back(Vertex{ name = name });
         m_map[name] = m_vertex.size()-1;
@@ -105,13 +85,6 @@ namespace Graph
         m_vertex[id1].edges.emplace_back(Edge{ id1, id2, dist });
         m_vertex[id2].edges.emplace_back(Edge{ id2, id1, dist });
     }
-
-
-     
-    Vertex Graph::get_node( int id )
-    {
-        return m_vertex[id];
-    }
     
     
 
@@ -123,20 +96,18 @@ namespace Graph
     
     void Graph::shortest_way(const std::string& name1, const std::string& name2)
     {
+        vertexes_exist(name1, name2);
+            
+
         m_vertex[m_map[name1]].distance = 0;
         Vertex node;
         std::priority_queue <Vertex, std::deque<Vertex>, Comparator> queue;
         queue.push(m_vertex[m_map[name1]]);
 
         // while the closest is closer than the destination
-        while (queue.top().distance < m_vertex[m_map[name2]].distance)
+        while ((queue.empty()) && (queue.top().distance < m_vertex[m_map[name2]].distance))
         {
-            if (queue.empty())
-            {
-                std::cout << "There is an error, cities are not connected" << std::endl;
-                exit(1);
-            }
-            node = get_node(m_map[queue.top().name]);
+           node = m_vertex[m_map[queue.top().name]];
 
             if (node.visited != 1)
             {
@@ -146,11 +117,11 @@ namespace Graph
                     {
                         m_vertex[node.edges[i].target_id].distance = m_vertex[m_map[node.name]].distance + node.edges[i].distance;
                         queue.push( m_vertex[node.edges[i].target_id]);
-                        m_vertex[node.edges[i].target_id].visited = 0;
+                        m_vertex[node.edges[i].target_id].visited = false;
                         m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
                     }
                 }
-                m_vertex[m_map[node.name]].visited = 1;
+                m_vertex[m_map[node.name]].visited = true;
             }
 
                 queue.pop();
@@ -159,12 +130,12 @@ namespace Graph
 
 
      
-    void Graph::write_data(const std::string& name)
+    void Graph::write_data(const std::string& name, const std::string& file_name)
     {
         int id = m_map[ name ] ;
 
         std::fstream file;
-        file.open("destination.txt" , std::ios::out);
+        file.open(file_name , std::ios::out);
 
         while (true)
         {

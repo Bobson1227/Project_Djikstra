@@ -22,25 +22,26 @@ namespace Graph
         std::string name;
         std::vector <Edge> edges;
         int parent_id = -1;
-        bool visited = 0;
+        bool visited = false;
         float distance = std::numeric_limits<float>::infinity();
     };
-
+    
     class Graph
     {
-    public:
+    private:
         std::vector <Vertex> m_vertex;
         std::map< std::string, int> m_map;
 
-
-        void load_graph();
         void vertexes_exist(const std::string& name1, const std::string& name2);
-        bool node_exist(const std::string& name );
-        void add_node(std::string name );
-        void add_edge(const std::string& name1, const std::string&  name2, float dist );
-        Vertex get_node( int id );
-        bool is_shorter(int id1, int id2, float dist );
+        bool node_exist(const std::string& name);
+        void add_node(std::string name);
+        void add_edge(const std::string& name1, const std::string&  name2, float dist);
+        bool is_shorter(int id1, int id2, float dist);
+        
+
+    public:
+        void load_graph(const std::string& file_name);
         void shortest_way(const std::string& name1, const std::string&);
-        void write_data(const std::string& name);
+        void write_data(const std::string& name, const std::string& file_name);
     };
 }
