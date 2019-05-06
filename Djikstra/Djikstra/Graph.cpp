@@ -4,6 +4,7 @@
 #include <map>
 #include <fstream>
 #include <string>
+#include <stdexcept>
 
 
 #include "Graph.h"
@@ -31,8 +32,9 @@ namespace Graph
 
         if (!file_data.good())
         {
-            throw std::invalid_argument("File can not be loaded");
+            std::cerr << "File can not be loaded" << std::endl;
         }
+
         while (!file_data.eof())
         {
             file_data >> name1 >> name2 >> dist;
@@ -47,6 +49,8 @@ namespace Graph
             }
             add_edge(name1, name2, dist);
         }
+
+        file_data.close();
     }
 
 
@@ -54,9 +58,9 @@ namespace Graph
     void Graph::vertexes_exist(const std::string& name1, const std::string& name2)
     {
         if (!node_exist(name1))
-            throw std::invalid_argument("Frist vertex not exist");
+            std::cerr << "Frist vertex not exist" << std::endl;
         if (!node_exist(name2))
-            throw std::invalid_argument("Second vertex not exist");
+            std::cerr << "Second vertex not exist" << std::endl;
     }
 
 
