@@ -24,6 +24,10 @@ namespace Graph
         int parent_id = -1;
         bool visited = false;
         float distance = std::numeric_limits<float>::infinity();
+
+        Vertex(const std::string& name) : name(name) {}
+        Vertex(const Vertex&) = delete;
+        Vertex operator=(const Vertex&) = delete;
     };
     
     class Graph
@@ -34,7 +38,7 @@ namespace Graph
 
         void vertexes_exist(const std::string& name1, const std::string& name2);
         bool node_exist(const std::string& name);
-        void add_node(std::string name);
+        void add_node(const std::string& name);
         void add_edge(const std::string& name1, const std::string&  name2, float dist);
         bool is_shorter(int id1, int id2, float dist);
         

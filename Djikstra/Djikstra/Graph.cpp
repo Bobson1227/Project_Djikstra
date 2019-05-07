@@ -93,10 +93,10 @@ namespace Graph
 
 
 
-    void Graph::add_node(std::string name)
+    void Graph::add_node(const std::string& node_name)
     {
-        m_vertex.emplace_back(Vertex{ name = name });
-        m_map[name] = m_vertex.size()-1;
+        m_vertex.emplace_back(Vertex(node_name));
+        m_map[node_name] = m_vertex.size()-1;
     }
 
 
@@ -123,14 +123,13 @@ namespace Graph
             
 
         m_vertex[m_map[name1]].distance = 0;
-        Vertex node;
         std::priority_queue <Vertex, std::deque<Vertex>, Comparator> queue;
         queue.push(m_vertex[m_map[name1]]);
 
         // while the closest is closer than the destination
         while ((queue.empty()) && (queue.top().distance < m_vertex[m_map[name2]].distance))
         {
-           node = m_vertex[m_map[queue.top().name]];
+           const Vertex& node = m_vertex[m_map[queue.top().name]];
 
             if (node.visited != 1)
             {
