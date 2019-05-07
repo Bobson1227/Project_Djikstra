@@ -30,26 +30,28 @@ namespace Graph
         std::fstream file_data;
         file_data.open(file_name, std::ios::in);
 
+        
         if (!file_data.good())
         {
             std::cerr << "File can not be loaded" << std::endl;
         }
-
-        while (!file_data.eof())
+        else
         {
-            file_data >> name1 >> name2 >> dist;
-    
-            if (!node_exist(name1))
+            while (!file_data.eof())
             {
-                add_node(name1);
-            }
-            if (!node_exist(name2))
-            {
-                add_node(name2);
-            }
-            add_edge(name1, name2, dist);
-        }
+                file_data >> name1 >> name2 >> dist;
 
+                if (!node_exist(name1))
+                {
+                    add_node(name1);
+                }
+                if (!node_exist(name2))
+                {
+                    add_node(name2);
+                }
+                add_edge(name1, name2, dist);
+            }
+        }
         file_data.close();
     }
 
