@@ -30,13 +30,14 @@ namespace Graph
         std::fstream file_data;
         file_data.open(file_name, std::ios::in);
 
-        
-        if (!file_data.good())
+        try 
         {
-            std::cerr << "File can not be loaded" << std::endl;
-        }
-        else
-        {
+            if (!file_data.good())
+            {
+                throw std::invalid_argument("File can not be loaded");
+            }
+            
+            
             while (!file_data.eof())
             {
                 file_data >> name1 >> name2 >> dist;
@@ -52,6 +53,11 @@ namespace Graph
                 add_edge(name1, name2, dist);
             }
         }
+        catch (const std::invalid_argument& e)
+        {
+            std::cout << "Invalid argument: " << e.what() << std::endl;
+        }
+
         file_data.close();
     }
 
@@ -59,10 +65,21 @@ namespace Graph
 
     void Graph::vertexes_exist(const std::string& name1, const std::string& name2)
     {
-        if (!node_exist(name1))
-            std::cerr << "Frist vertex not exist" << std::endl;
-        if (!node_exist(name2))
-            std::cerr << "Second vertex not exist" << std::endl;
+        try
+        {
+            if (!node_exist(name1))
+            {
+                throw std::invalid_argument("First vertex not exist");
+            }
+            if (!node_exist(name2))
+            {
+                throw std::invalid_argument("Second vertex not exist");
+            }
+        }
+        catch (const std::invalid_argument& e)
+        {
+            std::cout << "Invalid argument: " << e.what() << std::endl;
+        }
     }
 
 

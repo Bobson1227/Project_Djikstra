@@ -16,19 +16,12 @@ public:
     std::string destination;
     std::string road_file;
 
-    void parse_arguments(int argc, char *argv[])
+    void parse_arguments( char *argv[])
     {
-        if (argc != 5)
-        {
-            std::cerr << "Wrong number of arguments" << std::endl;
-        }
-        else
-        {
             data_file = argv[1];
             inceptive = argv[2];
             destination = argv[3];
             road_file = argv[4];
-        }
     }
 };
 
@@ -37,12 +30,22 @@ int main(int argc, char *argv[])
     Arguments arguments;
     Graph::Graph graph;
     
-   
-    
-        arguments.parse_arguments(argc, argv);
-        graph.load_graph(arguments.data_file);
-        graph.shortest_way(arguments.inceptive, arguments.destination);
-        graph.write_data(arguments.destination, arguments.road_file);
+    try
+    {
+        if (argc != 5)
+        {
+            throw std::invalid_argument("Wrong number of arguments");
+        }
+    }
+    catch (const std::invalid_argument& e)
+    {
+        std::cout << "Invalid argument: " << e.what() << std::endl;
+    }
+
+    arguments.parse_arguments(argv);
+    graph.load_graph(arguments.data_file);
+    graph.shortest_way(arguments.inceptive, arguments.destination);
+    graph.write_data(arguments.destination, arguments.road_file);
     
 
     system("pause");
