@@ -127,7 +127,7 @@ namespace Graph
         queue.push(m_vertex[m_map[name1]]);
 
         // while the closest is closer than the destination
-        while ((queue.empty()) && (queue.top().distance < m_vertex[m_map[name2]].distance))
+        while ((!queue.empty()) && (queue.top().distance < m_vertex[m_map[name2]].distance))
         {
            const Vertex& node = m_vertex[m_map[queue.top().name]];
 
