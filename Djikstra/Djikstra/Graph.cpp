@@ -30,32 +30,24 @@ namespace Graph
         std::fstream file_data;
         file_data.open(file_name, std::ios::in);
 
-        try 
+        if (!file_data.good())
         {
-            if (!file_data.good())
-            {
-                throw std::invalid_argument("File can not be loaded");
-            }
+            throw std::invalid_argument("File can not be loaded");
+        }      
             
-            
-            while (!file_data.eof())
-            {
-                file_data >> name1 >> name2 >> dist;
+        while (!file_data.eof())
+        {
+            file_data >> name1 >> name2 >> dist;
 
-                if (!node_exist(name1))
-                {
-                    add_node(name1);
-                }
-                if (!node_exist(name2))
-                {
-                    add_node(name2);
-                }
-                add_edge(name1, name2, dist);
+            if (!node_exist(name1))
+            {
+                add_node(name1);
             }
-        }
-        catch (const std::invalid_argument& e)
-        {
-            std::cout << "Invalid argument: " << e.what() << std::endl;
+            if (!node_exist(name2))
+            {
+                add_node(name2);
+            }
+            add_edge(name1, name2, dist);
         }
 
         file_data.close();
@@ -65,20 +57,13 @@ namespace Graph
 
     void Graph::vertexes_exist(const std::string& name1, const std::string& name2)
     {
-        try
+        if (!node_exist(name1))
         {
-            if (!node_exist(name1))
-            {
-                throw std::invalid_argument("First vertex not exist");
-            }
-            if (!node_exist(name2))
-            {
-                throw std::invalid_argument("Second vertex not exist");
-            }
+            throw std::invalid_argument("First vertex not exist");
         }
-        catch (const std::invalid_argument& e)
+        if (!node_exist(name2))
         {
-            std::cout << "Invalid argument: " << e.what() << std::endl;
+            throw std::invalid_argument("Second vertex not exist");
         }
     }
 
