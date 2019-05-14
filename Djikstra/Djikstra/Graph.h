@@ -26,6 +26,7 @@ namespace Graph
         float distance = std::numeric_limits<float>::infinity();
 
         Vertex(const std::string& name) : name(name) {}
+        Vertex(Vertex&& other) = default;
         Vertex(const Vertex&) = delete;
         Vertex operator=(const Vertex&) = delete;
     };
