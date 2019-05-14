@@ -14,44 +14,11 @@ namespace Graph
 {
     class Comparator {
     public:
-        bool operator()(const Vertex& v1, const Vertex& v2)
+        bool operator()(const Vertex* v1, const Vertex* v2)
         {
-            return v1.distance > v2.distance;
+            return v1->distance > v2->distance;
         }
     };
-
-
-
-    void Graph::load_graph(const std::string& file_name) 
-    {
-        std::string name1, name2;
-        float dist = 0;
-
-        std::fstream file_data;
-        file_data.open(file_name, std::ios::in);
-
-        if (!file_data.good())
-        {
-            throw std::invalid_argument("File can not be loaded");
-        }      
-            
-        while (!file_data.eof())
-        {
-            file_data >> name1 >> name2 >> dist;
-
-            if (!node_exist(name1))
-            {
-                add_node(name1);
-            }
-            if (!node_exist(name2))
-            {
-                add_node(name2);
-            }
-            add_edge(name1, name2, dist);
-        }
-
-        file_data.close();
-    }
 
 
 
@@ -93,6 +60,39 @@ namespace Graph
         m_vertex[id1].edges.emplace_back(Edge{ id1, id2, dist });
         m_vertex[id2].edges.emplace_back(Edge{ id2, id1, dist });
     }
+
+
+
+    void Graph::load_graph(const std::string& file_name)
+    {
+        std::string name1, name2;
+        float dist = 0;
+
+        std::fstream file_data;
+        file_data.open(file_name, std::ios::in);
+
+        if (!file_data.good())
+        {
+            throw std::invalid_argument("File can not be loaded");
+        }
+
+        while (!file_data.eof())
+        {
+            file_data >> name1 >> name2 >> dist;
+
+            if (!node_exist(name1))
+            {
+                add_node(name1);
+            }
+            if (!node_exist(name2))
+            {
+                add_node(name2);
+            }
+            add_edge(name1, name2, dist);
+        }
+
+        file_data.close();
+    }
     
     
 
@@ -108,13 +108,13 @@ namespace Graph
             
 
         m_vertex[m_map[name1]].distance = 0;
-        std::priority_queue <Vertex, std::deque<Vertex>, Comparator> queue;
-        queue.push(m_vertex[m_map[name1]]);
+        std::priority_queue <const Vertex*, std::deque<const Vertex*>, Comparator> queue;
+        queue.push(&m_vertex[m_map[name1]]);
 
         // while the closest is closer than the destination
-        while ((!queue.empty()) && (queue.top().distance < m_vertex[m_map[name2]].distance))
+        while ((!queue.empty()) && (queue.top()->distance < m_vertex[m_map[name2]].distance))
         {
-           const Vertex& node = m_vertex[m_map[queue.top().name]];
+           const Vertex& node = m_vertex[m_map[queue.top()->name]];
 
             if (node.visited != 1)
             {
@@ -123,7 +123,7 @@ namespace Graph
                     if (is_shorter(m_map[node.name], node.edges[i].target_id, node.edges[i].distance))
                     {
                         m_vertex[node.edges[i].target_id].distance = m_vertex[m_map[node.name]].distance + node.edges[i].distance;
-                        queue.push( m_vertex[node.edges[i].target_id]);
+                        queue.push(&m_vertex[node.edges[i].target_id]);
                         m_vertex[node.edges[i].target_id].visited = false;
                         m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
                     }
