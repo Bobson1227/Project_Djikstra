@@ -71,7 +71,7 @@ namespace Graph
 
         if (!file_data.good())
         {
-            throw std::invalid_argument("File can not be loaded");
+            throw std::ios_base::failure(file_name);
         }
 
         while (!file_data.eof())
