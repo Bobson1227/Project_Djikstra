@@ -113,17 +113,18 @@ namespace Graph
         while ((!queue.empty()) && (queue.top()->distance < m_vertex[m_map[vertex_name2]].distance))
         {
             const Vertex& node = *queue.top();
+            const size_t node_id = m_map[node.name];
 
             if (node.visited != 1)
             {
-                for (size_t i = 0; i < node.edges.size(); i++)
+                for (const auto& edge : node.edges)
                 {
-                    if (is_shorter(m_map[node.name], node.edges[i].target_id, node.edges[i].distance))
+                    if (is_shorter(node_id, edge.target_id, edge.distance))
                     {
-                        m_vertex[node.edges[i].target_id].distance = m_vertex[m_map[node.name]].distance + node.edges[i].distance;
-                        queue.push(&m_vertex[node.edges[i].target_id]);
-                        m_vertex[node.edges[i].target_id].visited = false;
-                        m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
+                        m_vertex[edge.target_id].distance = m_vertex[node_id].distance + edge.distance;
+                        queue.push(&m_vertex[edge.target_id]);
+                        m_vertex[edge.target_id].visited = false;
+                        m_vertex[edge.target_id].parent_id = node_id;
                     }
                 }
                 m_vertex[node_id].visited = true;
