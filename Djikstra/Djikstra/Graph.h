@@ -14,7 +14,7 @@ namespace Graph
     {
         int source_id;
         int target_id;
-        float distance = std::numeric_limits<float>::infinity();
+        float distance = std::numeric_limits<float>::signaling_NaN();
     };
 
     struct Vertex
