@@ -22,13 +22,13 @@ namespace Graph
 
 
 
-    void Graph::vertexes_exist(const std::string& name1, const std::string& name2)
+    void Graph::assert_vertexes_exist(const std::string& vertex_name1, const std::string& vertex_name2)
     {
-        if (!node_exist(name1))
+        if (!node_exist(vertex_name1))
         {
             throw std::invalid_argument("First vertex not exist");
         }
-        if (!node_exist(name2))
+        if (!node_exist(vertex_name2))
         {
             throw std::invalid_argument("Second vertex not exist");
         }
@@ -36,26 +36,24 @@ namespace Graph
 
 
 
-    bool Graph::node_exist(const std::string& name)
+    bool Graph::node_exist(const std::string& vertex_name)
     {
-        if(m_map.count(name)!=0)
-            return true;
-        return false;
+        return (m_map.count(vertex_name) != 0);
     }
 
 
 
-    void Graph::add_node(const std::string& node_name)
+    void Graph::add_node(const std::string& vertex_name)
     {
-        m_vertex.emplace_back(Vertex(node_name));
-        m_map[node_name] = m_vertex.size()-1;
+        m_vertex.emplace_back(Vertex(vertex_name));
+        m_map[vertex_name] = m_vertex.size()-1;
     }
 
 
 
-    void Graph::add_edge(const std::string& name1, const std::string& name2, float dist )
+    void Graph::add_edge(const std::string& vertex_name1, const std::string& name2, float dist )
     {
-        int id1 = m_map[ name1 ], id2 = m_map[ name2 ];
+        int id1 = m_map[vertex_name1 ], id2 = m_map[ name2 ];
         
         m_vertex[id1].edges.emplace_back(Edge{ id1, id2, dist });
         m_vertex[id2].edges.emplace_back(Edge{ id2, id1, dist });
@@ -102,19 +100,19 @@ namespace Graph
     }
 
     
-    void Graph::shortest_way(const std::string& name1, const std::string& name2)
+    void Graph::shortest_way(const std::string& vertex_name1, const std::string& vertex_name2)
     {
-        vertexes_exist(name1, name2);
+        assert_vertexes_exist(vertex_name1, vertex_name2);
             
 
-        m_vertex[m_map[name1]].distance = 0;
+        m_vertex[m_map[vertex_name1]].distance = 0;
         std::priority_queue <const Vertex*, std::deque<const Vertex*>, Comparator> queue;
-        queue.push(&m_vertex[m_map[name1]]);
+        queue.push(&m_vertex[m_map[vertex_name1]]);
 
         // while the closest is closer than the destination
-        while ((!queue.empty()) && (queue.top()->distance < m_vertex[m_map[name2]].distance))
+        while ((!queue.empty()) && (queue.top()->distance < m_vertex[m_map[vertex_name2]].distance))
         {
-           const Vertex& node = m_vertex[m_map[queue.top()->name]];
+            const Vertex& node = *queue.top();
 
             if (node.visited != 1)
             {
@@ -128,7 +126,7 @@ namespace Graph
                         m_vertex[node.edges[i].target_id].parent_id = m_map[node.name];
                     }
                 }
-                m_vertex[m_map[node.name]].visited = true;
+                m_vertex[node_id].visited = true;
             }
 
                 queue.pop();
@@ -137,22 +135,19 @@ namespace Graph
 
 
      
-    void Graph::write_data(const std::string& name, const std::string& file_name)
+    void Graph::write_data(const std::string& vertex_name, const std::string& file_name)
     {
-        int id = m_map[ name ] ;
+        int id = m_map[ vertex_name ] ;
 
         std::fstream file;
         file.open(file_name , std::ios::out);
 
-        while (true)
+        while (id != -1)
         {
             file << m_vertex[id].name << " " << m_vertex[id].distance << std::endl;
-
-            if (m_vertex[id].parent_id==-1)
-                break;
-
             id = m_vertex[id].parent_id;
         }
+
 
         file.close();
     }

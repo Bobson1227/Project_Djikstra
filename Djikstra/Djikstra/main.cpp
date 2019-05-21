@@ -35,11 +35,9 @@ int main(int argc, char *argv[])
     Arguments arguments = Arguments::parse_arguments(argc, argv);
     Graph::Graph graph;
         
-    arguments.parse_arguments(argc, argv);
     graph.load_graph(arguments.data_file);
     graph.shortest_way(arguments.source, arguments.target);
     graph.write_data(arguments.target, arguments.road_file);
-    
-    system("pause");
+
     return 0;
 }

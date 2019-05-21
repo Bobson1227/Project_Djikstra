@@ -37,16 +37,16 @@ namespace Graph
         std::vector <Vertex> m_vertex;
         std::map< std::string, int> m_map;
 
-        void vertexes_exist(const std::string& name1, const std::string& name2);
-        bool node_exist(const std::string& name);
-        void add_node(const std::string& name);
-        void add_edge(const std::string& name1, const std::string&  name2, float dist);
+        void assert_vertexes_exist(const std::string& vertex_name1, const std::string& vertex_name2);
+        bool node_exist(const std::string& vertex_name);
+        void add_node(const std::string& vertex_name);
+        void add_edge(const std::string& vertex_name1, const std::string&  vertex_name2, float dist);
         bool is_shorter(int id1, int id2, float dist);
         
 
     public:
         void load_graph(const std::string& file_name);
-        void shortest_way(const std::string& name1, const std::string&);
-        void write_data(const std::string& name, const std::string& file_name);
+        void shortest_way(const std::string& vertex_name1, const std::string& vertex_name2);
+        void write_data(const std::string& vertex_name, const std::string& file_name);
     };
 }
