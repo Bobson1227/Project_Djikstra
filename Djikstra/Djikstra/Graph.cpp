@@ -4,7 +4,6 @@
 #include <map>
 #include <fstream>
 #include <string>
-#include <stdexcept>
 
 
 #include "Graph.h"
