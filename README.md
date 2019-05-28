@@ -52,7 +52,7 @@ Lublin Lodz 294.0
 Lodz Warszawa 140.0
 ```
 
-#####  *example of file:*
+#####  *example of output file:*
 
 ```
 Warszawa 354.3
@@ -60,3 +60,6 @@ Czestochowa 136.3
 Katowice 61.7
 Bielsko-Biala 0
 ```
+
+
+##### Compiled with Visual Studio 2017
